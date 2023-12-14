@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDu707GzSf4uAanAwtGSJEzFfA6kmsrudY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>839898561044</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.kpProject</string>
+	<key>PROJECT_ID</key>
+	<string>kerja-praktik-bfc79</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kerja-praktik-bfc79.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:839898561044:ios:3c8015c07ee6d5e78ec501</string>
+</dict>
+</plist>

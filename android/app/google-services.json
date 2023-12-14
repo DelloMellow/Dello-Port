@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "839898561044",
+    "project_id": "kerja-praktik-bfc79",
+    "storage_bucket": "kerja-praktik-bfc79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839898561044:android:2d2ccb68cbea4aa58ec501",
+        "android_client_info": {
+          "package_name": "com.example.kp_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHfBBbhG4Hzh9bcvPPnZrw_pKJsLOkhsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
