@@ -53,8 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           email: email,
           password: password,
         );
-      }
-      else {
+      } else {
         showErrorMessage("Password don't match with Confirm Password!");
       }
       //hilangin loading
@@ -211,9 +210,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       const Text("Already have an account?"),
                       TextButton(
-                        onPressed: () {
-                          // todo register
-                        },
+                        onPressed: () {},
                         child: GestureDetector(
                           onTap: widget.onTap,
                           child: const Text(

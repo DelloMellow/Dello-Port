@@ -135,7 +135,6 @@ class _MyDropdown2State extends State<MyDropdown2> {
                     selectedItem = value;
                     isError = value != "Select an Item";
                     widget.controller.text = value!;
-                    //print(selectedItem);
                   });
                 },
               ),

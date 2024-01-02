@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kp_project/constant/colors.dart';
 
 class MyCard extends StatelessWidget {
-  final String? imagePath; // Path gambar (opsional)
+  final String? imagePath;
   final String title;
   final String description;
 

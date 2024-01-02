@@ -24,12 +24,8 @@ class MyIconButton extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       onPressed: onPressed,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
-            width: 100,
-          ),
-
           //Button Icon
           Icon(icon, size: 40, color: Colors.white),
       

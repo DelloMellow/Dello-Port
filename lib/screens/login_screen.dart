@@ -180,9 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       const Text("Don't you have an account?"),
                       TextButton(
-                        onPressed: () {
-                          // todo register
-                        },
+                        onPressed: () {},
                         child: GestureDetector(
                           onTap: widget.onTap,
                           child: const Text(

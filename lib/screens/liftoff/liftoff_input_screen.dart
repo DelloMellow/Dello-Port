@@ -87,8 +87,6 @@ class _LiftOffInputScreenState extends State<LiftOffInputScreen> {
         vesselNameController.text = data["vessel"];
         voyageController.text = data['voyage in'];
 
-        //print(containerController.text);
-
         setState(() {});
       },
       onError: (error) {

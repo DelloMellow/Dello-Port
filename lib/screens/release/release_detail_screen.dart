@@ -258,7 +258,7 @@ class _ReleaseDetailScreenState extends State<ReleaseDetailScreen> {
               //Submit Button
               MyButton(
                 text: "Release",
-                onPressed: confirmation, //tambahin method release disini
+                onPressed: confirmation,
                 buttonColor: steelBlue,
               ),
             ],
