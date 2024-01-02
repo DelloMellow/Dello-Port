@@ -78,7 +78,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 16,
                       ),
                     ),
-                    currentAccountPicture: const FlutterLogo(),
+                    //currentAccountPicture: const FlutterLogo(),
+                    currentAccountPicture: const CircleAvatar(
+                      backgroundColor: silver,
+                      child: Icon(
+                        Icons.person,
+                        size: 72,
+                        color: steelBlue,
+                      ),
+                    ),
                   ),
 
                   //menu 1: Home
@@ -173,21 +181,30 @@ class _HomeScreenState extends State<HomeScreen> {
           //menu Receiving
           NavigationDestination(
             icon: Icon(Icons.call_received_rounded),
-            selectedIcon: Icon(Icons.call_received_rounded, color: Colors.white70,),
+            selectedIcon: Icon(
+              Icons.call_received_rounded,
+              color: Colors.white70,
+            ),
             label: 'Receiving',
           ),
 
           //menu Liftoff
           NavigationDestination(
             icon: Icon(Icons.forklift),
-            selectedIcon: Icon(Icons.forklift, color: Colors.white70,),
+            selectedIcon: Icon(
+              Icons.forklift,
+              color: Colors.white70,
+            ),
             label: 'Liftoff',
           ),
 
           //menu Release
           NavigationDestination(
             icon: Icon(Icons.local_shipping_outlined),
-            selectedIcon: Icon(Icons.local_shipping, color: Colors.white70,),
+            selectedIcon: Icon(
+              Icons.local_shipping,
+              color: Colors.white70,
+            ),
             label: 'Release',
           ),
         ],

@@ -1,16 +1,169 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_project/constant/colors.dart';
 import 'package:kp_project/constant/variable.dart';
+import 'package:kp_project/screens/helper.dart';
 import 'package:kp_project/widgets/my_button.dart';
+import 'package:kp_project/widgets/my_confirm_dialog.dart';
 import 'package:kp_project/widgets/my_inputfield.dart';
 
-class ReleaseDetailScreen extends StatelessWidget {
-  const ReleaseDetailScreen({super.key});
+class ReleaseDetailScreen extends StatefulWidget {
+  const ReleaseDetailScreen({
+    super.key,
+    required this.documentID,
+  });
+
+  final String documentID;
+
+  @override
+  State<ReleaseDetailScreen> createState() => _ReleaseDetailScreenState();
+}
+
+class _ReleaseDetailScreenState extends State<ReleaseDetailScreen> {
+  //controller
+  TextEditingController containerController = TextEditingController();
+  TextEditingController companyController = TextEditingController();
+  TextEditingController vesselNameController = TextEditingController();
+  TextEditingController voyageController = TextEditingController();
+  TextEditingController podController = TextEditingController();
+  TextEditingController typeSizeController = TextEditingController();
+  TextEditingController conditionController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
+  TextEditingController commodityController = TextEditingController();
+
+  //firestore database
+  final db = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    getContainerData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    containerController.dispose();
+    companyController.dispose();
+    vesselNameController.dispose();
+    voyageController.dispose();
+    podController.dispose();
+    typeSizeController.dispose();
+    conditionController.dispose();
+    weightController.dispose();
+    commodityController.dispose();
+  }
+
+  void getContainerData() async {
+    final collectionReference =
+        db.collection("Container").doc(widget.documentID);
+    collectionReference.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        //memasukkan value dari firestore kedalam inputtextfield
+        containerController.text = data["name"];
+        companyController.text = data["company"];
+        vesselNameController.text = data["vessel"];
+        voyageController.text = data['voyage in'];
+        podController.text = data["port of destination"];
+        typeSizeController.text = data["type size"];
+        conditionController.text = data["condition"];
+        weightController.text = data["weight"];
+        commodityController.text = data["commodity"];
+
+        setState(() {});
+      },
+      onError: (error) {
+        showErrorMessage(context, "Error: $error");
+      },
+    );
+  }
+
+  void confirmation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MyConfirmDialog(
+          iconColor: Colors.amber,
+          titleText: "Are you sure?",
+          contentText:
+              "Are you sure want to release thi container? \nMake sure all information is correct.",
+          confirmText: "Release",
+          onConfirm: release,
+          buttonColor: Colors.amber,
+        );
+      },
+    );
+  }
+
+  void release() {
+    final containerData = <String, bool>{
+      "isReleased": true,
+    };
+
+    //masukkin datanya kedalam database
+    db
+        .collection("Container")
+        .doc(containerController.text)
+        .set(
+          containerData,
+          SetOptions(merge: true),
+        )
+        .then((value) {
+      Navigator.pop(context);
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          contentPadding: const EdgeInsets.all(20),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          backgroundColor: steelBlue,
+          icon: const Icon(
+            Icons.verified_outlined,
+            size: 180,
+            color: white,
+            weight: 5,
+          ),
+          title: const Text(
+            "Success",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: white,
+            ),
+          ),
+          actions: const [
+            Column(
+              children: [
+                Center(
+                  child: Text(
+                    "Container is Released",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: white,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+    }).catchError(
+      (error) {
+        showErrorMessage(context, "Error writing document: $error");
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final dummyController = TextEditingController();
-
     return Scaffold(
       backgroundColor: silver,
       appBar: AppBar(
@@ -28,7 +181,7 @@ class ReleaseDetailScreen extends StatelessWidget {
             children: [
               //Container Number Text Field
               MyInputField(
-                controller: dummyController,
+                controller: containerController,
                 label: "No. Container",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -36,7 +189,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Company Text Field
               MyInputField(
-                controller: dummyController,
+                controller: companyController,
                 label: "Company",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -44,7 +197,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Vessel Name Text Field
               MyInputField(
-                controller: dummyController,
+                controller: vesselNameController,
                 label: "Vessel Name",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -52,7 +205,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Voyage Text Field
               MyInputField(
-                controller: dummyController,
+                controller: voyageController,
                 label: "Voyage In",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -60,7 +213,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Port of Destination Text Field
               MyInputField(
-                controller: dummyController,
+                controller: podController,
                 label: "Port of Destination",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -68,7 +221,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Type Size Text Field
               MyInputField(
-                controller: dummyController,
+                controller: typeSizeController,
                 label: "Type Size",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -76,7 +229,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Condition Text Field
               MyInputField(
-                controller: dummyController,
+                controller: conditionController,
                 label: "Condition",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -84,7 +237,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Weight Text Field
               MyInputField(
-                controller: dummyController,
+                controller: weightController,
                 label: "Weight (Ton)",
                 inputType: TextInputType.number,
                 isEnable: false,
@@ -92,7 +245,7 @@ class ReleaseDetailScreen extends StatelessWidget {
 
               //Commodity Text Field
               MyInputField(
-                controller: dummyController,
+                controller: commodityController,
                 label: "Commodity",
                 inputType: TextInputType.text,
                 isEnable: false,
@@ -105,7 +258,7 @@ class ReleaseDetailScreen extends StatelessWidget {
               //Submit Button
               MyButton(
                 text: "Release",
-                onPressed: () {}, //tambahin method release disini
+                onPressed: confirmation, //tambahin method release disini
                 buttonColor: steelBlue,
               ),
             ],

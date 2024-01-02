@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kp_project/constant/colors.dart';
+import 'package:kp_project/screens/helper.dart';
 import 'package:kp_project/screens/release/release_detail_screen.dart';
 import 'package:kp_project/widgets/my_card.dart';
-import 'package:kp_project/widgets/my_dropdown.dart';
+import 'package:kp_project/widgets/my_dropdown2.dart';
 
 class ReleaseScreen extends StatefulWidget {
   const ReleaseScreen({super.key});
@@ -12,6 +13,42 @@ class ReleaseScreen extends StatefulWidget {
 }
 
 class _ReleaseScreenState extends State<ReleaseScreen> {
+  TextEditingController containerController = TextEditingController();
+  late bool notSelectedYet;
+
+  void validation() {
+    if (containerController.text == "Select an Item") {
+      notSelectedYet = true;
+    } else {
+      notSelectedYet = false;
+    }
+  }
+
+  void selectContainer() {
+    validation();
+
+    if (!notSelectedYet) {
+      Navigator.of(context)
+          .push(
+        MaterialPageRoute(
+          builder: (context) =>
+              ReleaseDetailScreen(documentID: containerController.text),
+        ),
+      )
+          .then((value) {
+        setState(
+          () {
+            containerController.clear();
+          },
+        );
+      });
+    } else {
+      showErrorMessage(
+        context,
+        "You need to select one of the options in the dropdown !",
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +81,13 @@ class _ReleaseScreenState extends State<ReleaseScreen> {
               child: Column(
                 children: [
                   //No. Container Dropdown
-                  // const MyDropdown(
-                  //   label: "No. Container",
-                  //   collectionPath: "Dummy Container",
-                  // ),
+                  MyDropdown2(
+                    key: UniqueKey(),
+                    label: "No. Container",
+                    collectionPath: "Container",
+                    controller: containerController,
+                    isRelease: true,
+                  ),
 
                   const SizedBox(
                     height: 20,
@@ -59,13 +99,7 @@ class _ReleaseScreenState extends State<ReleaseScreen> {
                     color: steelBlue,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8)),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ReleaseDetailScreen(),
-                        ),
-                      );
-                    },
+                    onPressed: selectContainer,
                     child: const Text(
                       "Select",
                       style: TextStyle(color: Colors.white),

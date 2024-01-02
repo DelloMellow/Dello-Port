@@ -28,6 +28,7 @@ class _MapViewState extends State<MapView> {
         zoom: 100.0,
       ),
       markers: {
+        //penanda warna merah di maps
         Marker(
             markerId: const MarkerId('1'),
             position: const LatLng(-6.143972673655266, 106.89023332863667),

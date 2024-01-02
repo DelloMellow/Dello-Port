@@ -10,3 +10,5 @@ const Color mRed = Color.fromARGB(255, 224, 43, 29);
 const Color lightRed = Color.fromARGB(255, 255, 241, 240);
 const Color lightPurple = Color.fromARGB(255, 179, 181, 215);
 const Color silver = Color.fromARGB(255, 245, 247, 250);
+const Color green = Color.fromARGB(255, 0, 211, 79);
+const Color white = Colors.white;

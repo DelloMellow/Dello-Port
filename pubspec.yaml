@@ -43,6 +43,7 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   google_maps_flutter: ^2.5.0
   cloud_firestore: ^4.13.6
+  image_picker: ^1.0.5
 
 dev_dependencies:
   flutter_test:

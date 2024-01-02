@@ -1,54 +1,62 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kp_project/constant/colors.dart';
 import 'package:kp_project/widgets/my_snackbar.dart';
 
 class MyDropdown extends StatefulWidget {
+  final String label;
+  final String collectionPath;
+  final TextEditingController controller;
+
   const MyDropdown({
     Key? key,
     required this.label,
     required this.collectionPath,
-    required this.selectedValue,
-    required this.onChanged,
-    required this.value,
-    this.isEnable = true,
+    required this.controller,
   }) : super(key: key);
-
-  final String label;
-  final String collectionPath;
-  final String selectedValue;
-  final String value;
-  final ValueChanged<String?> onChanged;
-  final bool isEnable;
 
   @override
   State<MyDropdown> createState() => _MyDropdownState();
 }
 
 class _MyDropdownState extends State<MyDropdown> {
-  late String dropdownValue;
-  late Future<List<String>> firestoreOptions;
+  late List<String> dropdownItems = [];
+  String? selectedItem;
+  bool isError = false;
+  late bool isLoading;
 
   @override
   void initState() {
     super.initState();
-    //dropdownValue = '';
-    firestoreOptions = getFirestoreOptions();
+    _fetchDropdownItems();
   }
 
-  //Mengambil collection dari firestore untuk dimasukkan kedalam dropdownmenu
-  Future<List<String>> getFirestoreOptions() async {
+  //method untuk mengambil collection dari firestore untuk dimunculkan kedalam dropdown item
+  Future<void> _fetchDropdownItems() async {
     try {
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection(widget.collectionPath)
-          .get();
-      final List<String> options = querySnapshot.docs
-          .map((doc) => doc.get('name'))
-          .cast<String>()
-          .toList();
-      return options;
+      setState(() {
+        isLoading = true;
+      });
+
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection(widget.collectionPath);
+
+      QuerySnapshot querySnapshot = await collectionReference.get();
+
+      dropdownItems = ['Select an Item'] +
+          querySnapshot.docs.map((doc) => doc.get("name").toString()).toList();
+
+      // Set default value if available
+      if (dropdownItems.isNotEmpty && selectedItem != "") {
+        selectedItem = 'Select an Item';
+        widget.controller.text = selectedItem!;
+      }
+
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
-      showErrorMessage('Error fetching Firestore data: $e');
-      return [];
+      showErrorMessage("Error fetching dropdown items: $e");
     }
   }
 
@@ -64,68 +72,53 @@ class _MyDropdownState extends State<MyDropdown> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //Label Text
+          //Text Label
           Text(
             widget.label,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
-            textAlign: TextAlign.start,
           ),
 
           //Spacer
           const SizedBox(height: 5),
 
-          //Builder untuk dropdown yg dihubungkan dengan firestore
-          FutureBuilder<List<String>>(
-            future: firestoreOptions,
-            builder: (context, snapshot) {
-              //memunculkan loading
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No data available');
-              } else {
-                //ambil data pertama dari firestore
-                dropdownValue = snapshot.data!.first;
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: widget.value,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      iconSize: 30,
-                      isExpanded: true,
-                      items: snapshot.data!
-                          .map<DropdownMenuItem<String>>((String option) {
-                        return DropdownMenuItem(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList(),
-                      onChanged: widget
-                              .isEnable //kalau misalnya isEnable = false maka akan disable
-                          ? //(String? newValue) {
-                              // setState(() {
-                              //   dropdownValue = newValue!;
-                              // });
-                              widget.onChanged
-                            //}
-                          : null,
-                    ),
-                  ),
-                );
-              }
-            },
+          if (isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+
+          //Dropdown
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: isError ? Colors.grey : Colors.red),
+                color: isError ? silver : lightRed),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                icon: const Icon(Icons.keyboard_arrow_down),
+                isExpanded: true,
+                value: selectedItem,
+                items: dropdownItems
+                    .map<DropdownMenuItem<String>>(
+                      (String value) => DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedItem = value;
+                    isError = value != "Select an Item";
+                    widget.controller.text = value!;
+                    //print(selectedItem);
+                  });
+                },
+              ),
+            ),
           ),
         ],
       ),
