@@ -148,6 +148,7 @@ class _LiftOffInputScreenState extends State<LiftOffInputScreen> {
         "position": positionData,
         "remark": remarkController.text,
         "isLiftOff": true,
+        "isReleased": false,
         "images": imagePaths,
       };
 

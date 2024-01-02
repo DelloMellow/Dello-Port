@@ -77,9 +77,9 @@ class _ReceivingScreenState extends State<ReceivingScreen> {
               ],
             ),
         
-            // Center(
-            //   child: Text("Barcode result = $_scanQRResult"),
-            // )
+            Center(
+              child: Text("Barcode result = $_scanQRResult"),
+            )
           ],
         ),
       ),

@@ -88,7 +88,7 @@ class _ReleaseDetailScreenState extends State<ReleaseDetailScreen> {
           iconColor: Colors.amber,
           titleText: "Are you sure?",
           contentText:
-              "Are you sure want to release thi container? \nMake sure all information is correct.",
+              "Are you sure want to release this container? \nMake sure all information is correct.",
           confirmText: "Release",
           onConfirm: release,
           buttonColor: Colors.amber,
