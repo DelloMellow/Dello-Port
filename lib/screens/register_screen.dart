@@ -54,7 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           password: password,
         );
       } else {
-        showErrorMessage("Password don't match with Confirm Password!");
+        showErrorMessage("Password Don't Match With Confirm Password!");
       }
       //hilangin loading
       Navigator.pop(context);
@@ -73,13 +73,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
         showErrorMessage("All Text Field Cannot be Empty!");
       } else if (e.code == 'email-already-in-use') {
-        showErrorMessage("Email already in use!");
+        showErrorMessage("Email Already in Use!");
       } else if (e.code == 'user-not-found') {
         showErrorMessage("User Not Found!");
       } else if (e.code == 'invalid-email') {
         showErrorMessage("Invalid Email Format!");
       } else {
-        showErrorMessage("Email already in use!");
+        showErrorMessage("Email Already in Use!");
       }
     }
   }

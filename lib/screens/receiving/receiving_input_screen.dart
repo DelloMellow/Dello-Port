@@ -12,7 +12,12 @@ import 'package:kp_project/widgets/my_dropdown.dart';
 import 'package:kp_project/widgets/my_inputfield.dart';
 
 class ReceivingInputScreen extends StatefulWidget {
-  const ReceivingInputScreen({super.key});
+  const ReceivingInputScreen({
+    super.key,
+    this.containerNumber,
+  });
+
+  final String? containerNumber;
 
   @override
   State<ReceivingInputScreen> createState() => _ReceivingInputScreenState();
@@ -47,6 +52,9 @@ class _ReceivingInputScreenState extends State<ReceivingInputScreen> {
     super.initState();
     _cameraRepository =
         CameraRepository(context, onImagesChanged: _updateImages);
+    if (widget.containerNumber != null) {
+      containerController.text = widget.containerNumber!;
+    }
   }
 
   void _updateImages(List<XFile> updatedImages) {
@@ -122,6 +130,7 @@ class _ReceivingInputScreenState extends State<ReceivingInputScreen> {
           .get();
 
       if (duplicateDocs.docs.isNotEmpty) {
+        // ignore: use_build_context_synchronously
         showErrorMessage(context,
             '${containerController.text} already added to Receiving List!');
       } else {

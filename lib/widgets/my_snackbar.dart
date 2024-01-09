@@ -9,7 +9,11 @@ class MySnackBar {
     Color textColor = Colors.white,
   }) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: const TextStyle(fontSize: 13),
+        textAlign: TextAlign.center,
+      ),
       duration: duration,
       backgroundColor: backgroundColor,
       behavior: SnackBarBehavior.floating,

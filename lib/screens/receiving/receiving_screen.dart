@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kp_project/constant/colors.dart';
+import 'package:kp_project/screens/helper.dart';
 import 'package:kp_project/screens/receiving/receiving_input_screen.dart';
 import 'package:kp_project/widgets/my_card.dart';
 import 'package:kp_project/widgets/my_icon_button.dart';
@@ -14,8 +17,6 @@ class ReceivingScreen extends StatefulWidget {
 }
 
 class _ReceivingScreenState extends State<ReceivingScreen> {
-  String _scanQRResult = '';
-
   void scanQR() async {
     String qrcodeScanRes;
     try {
@@ -25,12 +26,22 @@ class _ReceivingScreenState extends State<ReceivingScreen> {
         false,
         ScanMode.QR,
       );
+
+      if (qrcodeScanRes.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ReceivingInputScreen(containerNumber: qrcodeScanRes),
+          ),
+        );
+      } else {
+        showErrorMessage(context, "Scanning QR code canceled");
+      }
     } on PlatformException {
-      qrcodeScanRes = "Failed to get platform version";
+      showErrorMessage(context, "Failed to get platform version !");
     }
-    setState(() {
-      _scanQRResult = qrcodeScanRes;
-    });
+    setState(() {});
   }
 
   @override
@@ -48,11 +59,11 @@ class _ReceivingScreenState extends State<ReceivingScreen> {
               description:
                   "Proses penerimaan kontainer dimana pada proses ini mencakup pemeriksaan fisik dan pencatatan informasi dari kontainer yang masuk.",
             ),
-        
+
             const SizedBox(
               height: 100,
             ),
-        
+
             Column(
               children: [
                 MyIconButton(
@@ -76,10 +87,6 @@ class _ReceivingScreenState extends State<ReceivingScreen> {
                 ),
               ],
             ),
-        
-            Center(
-              child: Text("Barcode result = $_scanQRResult"),
-            )
           ],
         ),
       ),
